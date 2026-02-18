@@ -60,6 +60,49 @@ Aplicación full-stack para recopilar carreras de `carreirasgalegas.com`, guarda
 
 ## Cómo ejecutar en local
 
+## Guía súper simple (si no tienes experiencia)
+
+Si quieres probarlo **sin tocar código**, sigue estos pasos:
+
+1. Instala Docker Desktop:
+   - Windows/Mac: https://www.docker.com/products/docker-desktop/
+   - Linux: Docker Engine + Docker Compose plugin.
+2. Abre una terminal dentro de esta carpeta del proyecto.
+3. Ejecuta:
+
+```bash
+make up
+```
+
+4. Espera 1-2 minutos la primera vez.
+5. Abre en el navegador:
+   - Frontend (mapa): `http://localhost:5173`
+   - Backend (estado): `http://localhost:8000/health`
+
+Para parar todo:
+
+```bash
+make down
+```
+
+Para ver logs (si algo falla):
+
+```bash
+make logs
+```
+
+---
+
+### Comandos rápidos disponibles
+
+```bash
+make help
+```
+
+Incluye `make up`, `make down`, `make logs`, `make restart` y `make health`.
+
+---
+
 ### Opción 1: Docker Compose
 
 ```bash
@@ -86,6 +129,28 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## Cómo comprobar que funciona (checklist para principiantes)
+
+1. `http://localhost:8000/health` debe devolver:
+
+```json
+{"status":"ok"}
+```
+
+2. `http://localhost:8000/events` debe devolver un array JSON (aunque esté vacío si el scraping falla temporalmente).
+3. `http://localhost:5173` debe mostrar:
+   - título "Próximas carreras en Galicia",
+   - mapa,
+   - filtros,
+   - lista debajo del mapa.
+4. Cambia un filtro (por ejemplo tipo `trail`) y verifica que mapa y lista se actualizan sin recargar la página.
+
+## Problemas típicos (y solución rápida)
+
+- **No arranca Docker**: reinicia Docker Desktop y repite `make up`.
+- **Puerto ocupado** (`8000` o `5173`): cierra la app que use ese puerto o cambia el mapeo en `docker-compose.yml`.
+- **No aparecen eventos**: revisa `make logs`; puede haber cambiado la web origen o fallado geocodificación temporalmente.
 
 ## Despliegue
 
